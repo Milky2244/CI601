@@ -67,8 +67,7 @@ def get_response_from_db(self, intent):
         result = cursor.fetchone()
         if result:
             return result[0]
-        else:
-            return "No response found."
+
     except Exception as e:
         print(f"Error retrieving response: {e}")
         return "Sorry, I encountered an error while processing your request."
@@ -385,7 +384,8 @@ class ChatbotApp:
 
             else:
                 response = self.db_manager.get_response_from_db(intent)
-                responses.append(response if response else "No response found.")
+                if response and response != "No response found.":  # Check if a valid response is retrieved
+                    responses.append(response)
 
         return ' '.join(responses) if responses else "Sorry, I couldn't understand that."
 
